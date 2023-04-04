@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Install Nginx
+sudo apt-get update
+sudo apt-get install -y nginx
+# To add custom HTTP response header
+sudo sed -i 's/# server_tokens off;/server_tokens off;\n\tadd_header X-Server-By $hostname;/' /etc/nginx/nginx.conf
+# To restart Nginx
+sudo systemct1 restart nginx
