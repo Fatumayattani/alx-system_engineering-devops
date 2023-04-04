@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Update apt package lists and install nginx
+apt-get update
+apt-get -y install nginx
+
 # Create a new configuration file for nginx
 /etc/nginx/sites-available/default
 server {
