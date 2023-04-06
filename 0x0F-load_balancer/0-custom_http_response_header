@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 # Install Nginx
+
 sudo apt-get update
-sudo apt-get install -y nginx
-# To add custom HTTP response header
-sudo sed -i 's/# server_tokens off;/server_tokens off;\n\tadd_header X-Server-By $hostname;/' /etc/nginx/nginx.conf
-# To restart Nginx
-sudo systemct1 restart nginx
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+echo "Holberton School" > /var/www/html/index.html
+echo "This is not a page" > /var/www/html/404.html
+sed -i '/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
+sed -i '/listen 80 default_server/a \\terror_page 404 /404.html;' /etc/nginx/sites-available/default
+sudo sed -i "/listen 80 default_server/a add_header X-Served-By '$HOSTNAME';" /etc/nginx/sites-available/default
+sudo service nginx reload
+sudo service nginx start
