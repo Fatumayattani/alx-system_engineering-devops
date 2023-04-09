@@ -1,17 +1,19 @@
-class nginx_custom_http_response_header {
-
-  # Set the name of the custom HTTP header
-  $header_name = 'X-Served-By'
-
-  # Get the hostname of the machine Nginx is running on
-  $server_hostname = $::hostname
-
-  # Configure Nginx to include the custom HTTP header
-  file { '/etc/nginx/conf.d/custom-http-header.conf':
-    content => "add_header ${header_name} ${server_hostname};",
-    mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
-    notify  => Service['nginx'],
-  }
+#puppet advance
+exec { 'update':
+  command  => 'sudo apt-get update',
+  provider => shell,
+}
+-> package {'nginx':
+  ensure => present,
+}
+-> file_line { 'header line':
+  ensure => present,
+  path   => '/etc/nginx/sites-available/default',
+  line   => "	location / {
+  add_header X-Served-By ${hostname};",
+  match  => '^\tlocation / {',
+}
+-> exec { 'restart service':
+  command  => 'sudo service nginx restart',
+  provider => shell,
 }
